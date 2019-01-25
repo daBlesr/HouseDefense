@@ -10,9 +10,9 @@ public class PlayerJump : MonoBehaviour
     private Vector2 velocity = new Vector2(0,0);
 	private bool isJumping = false;
     private Quaternion rotation = new Quaternion();
-    private float jumpVelocity = 10f;
+    private float jumpVelocity = 20f;
     private const float walkVelocity = 10;
-    private const float midAirDrag = 0.3f;
+    private const float midAirDrag = 0.7f;
     private int horDirection = 1;
     private Boolean turned = false;
 
