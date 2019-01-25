@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class JumpForce : MonoBehaviour
 {
-
 	private float jumpforce = 10.0f;
 	private Rigidbody2D rigid;
 	private bool jumping = false;
@@ -18,7 +15,7 @@ public class JumpForce : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+		if(Input.GetButtonDown("JumpPs4"))
 		{
 			jumping = true;
 			rigid.velocity = new Vector2(0, jumpforce);
