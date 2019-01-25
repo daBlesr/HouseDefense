@@ -5,17 +5,17 @@ using UnityEngine;
 public class PlayerJump : MonoBehaviour
 {
 
-	private Vector3 position = new Vector3(0,0,0);
+	[SerializeField] private Vector2 position;
 	private bool isJumping = false;
     private bool isFalling = false;
 	private float maxHeight = 10;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+	// Start is called before the first frame update
+	void Start()
+	{
 		this.gameObject.transform.SetPositionAndRotation(position, new Quaternion());
-    }
-
+	}
+	
     // Update is called once per frame
     void Update()
     {
