@@ -7,12 +7,13 @@ public class PlayerJump : MonoBehaviour
 
 	private Vector3 position = new Vector3(0,0,0);
 	private bool isJumping = false;
+    private bool isFalling = false;
 	private float maxHeight = 10;
 
     // Start is called before the first frame update
     void Start()
     {
-		this.gameObject.transform.position = position;
+		this.gameObject.transform.SetPositionAndRotation(position, new Quaternion());
     }
 
     // Update is called once per frame
@@ -21,26 +22,31 @@ public class PlayerJump : MonoBehaviour
 		Jump();
 		if (isJumping)
 		{
-			if (position.y < maxHeight)
+			if (position.y < maxHeight && !isFalling)
 			{
 				position.y += 1;
 			}
 			else
 			{
+                isFalling = true;
 				position.y -= 1;
 
 				if(position.y == 0)
 				{
 					isJumping = false;
+                    isFalling = false;
 				}
 			}
 		}
-	}
+
+        this.gameObject.transform.SetPositionAndRotation(position, new Quaternion());
+    }
 
 	private void Jump()
 	{
-		if(Input.GetKeyDown(KeyCode.Space) && isJumping == false)
-		{
+        // if(Input.GetKeyDown(KeyCode.Space) && !isJumping)
+        if (Input.GetButtonDown("Fire1") && !isJumping)
+        {
 			Debug.Log("Hallo");
 			isJumping = true;
 		}
