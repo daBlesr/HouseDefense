@@ -6,77 +6,75 @@ using UnityEngine;
 public class PlayerJump : MonoBehaviour
 {
 
-	private Vector2 position = new Vector2(0,0);
+    private Rigidbody2D rigid;
+    private Vector2 velocity = new Vector2(0,0);
 	private bool isJumping = false;
-    private bool isFalling = false;
-	private float maxHeight = 10;
     private Quaternion rotation = new Quaternion();
-    private const float jumpVelocity = 20;
-    private const float fallVelocity = 30;
+    private float jumpVelocity = 10f;
     private const float walkVelocity = 10;
-    private const float midAirDrag = 0.5f;
-    private Vector2 speedVector = new Vector2(0, 0);
+    private const float midAirDrag = 0.3f;
+    private int horDirection = 1;
+    private Boolean turned = false;
 
     // Start is called before the first frame update
     void Start()
     {
-		this.gameObject.transform.SetPositionAndRotation(position, rotation);
+        // this.gameObject.transform.SetPositionAndRotation(position, rotation);
+        rigid = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 currentPosition = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
+        velocity = rigid.velocity;
 
         Jump();
         Walk();
 
-        speedVector = position - currentPosition;
-        this.gameObject.transform.SetPositionAndRotation(position, rotation);
+        rigid.velocity = velocity;
     }
 
     private void Walk()
     {
-        // float verticalAxis = Input.GetAxis("Vertical");
         float horizontalAxis = Input.GetAxis("Horizontal");
         
         if (Math.Abs(horizontalAxis) > 0) {
-            if (isJumping && Math.Sign(horizontalAxis) != Math.Sign(speedVector.x))
+            
+            if (isJumping && (Math.Sign(horizontalAxis) != Math.Sign(horDirection) || turned))
             {
                 // mid air movement by turning around, drag is applied.
-                position.x += horizontalAxis * walkVelocity * Time.deltaTime * midAirDrag;
+                rigid.transform.Translate(new Vector2(
+                    horizontalAxis * walkVelocity * midAirDrag * Time.deltaTime,
+                    0
+                ));
+                turned = true;
             } else
             {
-                position.x += horizontalAxis * walkVelocity * Time.deltaTime;
+                rigid.transform.Translate(new Vector2(
+                    horizontalAxis * walkVelocity * Time.deltaTime,
+                    0
+                ));
             }
+        }
+
+        horDirection = Math.Sign(horizontalAxis);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Platform")
+        {
+            isJumping = false;
+            turned = false;
         }
     }
 
     private void Jump()
 	{
-        if (Input.GetButtonDown("Fire1") && !isJumping)
+        if ((Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.Space)))
         {
-			isJumping = true;
-		}
-
-        if (isJumping)
-        {
-            if (position.y < maxHeight && !isFalling)
-            {
-                position.y += jumpVelocity * Time.deltaTime;
-            }
-            else
-            {
-                isFalling = true;
-                position.y -= fallVelocity * Time.deltaTime;
-
-                if (position.y <= 0)
-                {
-                    position.y = 0;
-                    isJumping = false;
-                    isFalling = false;
-                }
-            }
+            velocity.y = jumpVelocity;
+            isJumping = true;
         }
     }
 }
