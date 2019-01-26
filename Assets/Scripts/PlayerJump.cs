@@ -71,7 +71,7 @@ public class PlayerJump : MonoBehaviour
 
     private void Jump()
 	{
-        if ((Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.Space)))
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Space)))
         {
             velocity.y = jumpVelocity;
             isJumping = true;
