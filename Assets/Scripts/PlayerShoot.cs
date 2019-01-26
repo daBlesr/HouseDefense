@@ -79,8 +79,6 @@ public class PlayerShoot : MonoBehaviour
                 lookDirection * length * Mathf.Cos(rotation),
                 length * Mathf.Sin(rotation)
             );
-
-            Debug.Log(newBullet.velocity);
         }
     }
 }
