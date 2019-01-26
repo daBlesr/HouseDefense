@@ -37,6 +37,7 @@ public class Goblin : Character
 		Movement();	
         if (health.isDead())
         {
+            this.health.destroy();
             Destroy(this.gameObject);
         }
 	}
