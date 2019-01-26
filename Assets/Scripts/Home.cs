@@ -8,7 +8,7 @@ public class Home : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        health = new Health(30);
+        health = new Health(30, 6, 4);
     }
 
     private void OnGUI()

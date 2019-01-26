@@ -1148,6 +1148,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4694203992435734956, guid: 69282847ccd09b149a7f0b74829faa19,
+        type: 3}
+      propertyPath: m_SleepingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4694203992435734954, guid: 69282847ccd09b149a7f0b74829faa19,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1212,11 +1217,6 @@ PrefabInstance:
         type: 3}
       propertyPath: goblinHealthBar
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4694203992435734956, guid: 69282847ccd09b149a7f0b74829faa19,
-        type: 3}
-      propertyPath: m_SleepingMode
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4694203993634550206, guid: 69282847ccd09b149a7f0b74829faa19,
         type: 3}
