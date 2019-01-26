@@ -1,27 +1,25 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Goblin : Character
 {
 	[SerializeField] private GameObject player;
-	[SerializeField] private GameObject hitBoxAttack;
+	[SerializeField] private GameObject hitBoxEnemy;
 
 	private bool isWalking = false;
-	private bool isAttacking = false;
+	private float timerHomeAttack = 2f;
 
 	// Start is called before the first frame update
 	void Start()
     {
 		moveSpeed += 1 * Time.deltaTime;
 		isWalking = true;
-		isAttacking = false;
 	}
 
     // Update is called once per frame
     void Update()
     {
-		Movement();
+		Movement();	
 	}
 
 	private void Movement()
@@ -29,23 +27,36 @@ public class Goblin : Character
 		if(isWalking == true)
 		{
 			this.gameObject.transform.position += new Vector3(-moveSpeed, 0, 0);
-			Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+			Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 		}
 	}
 
-	private void Attack(bool isAttack)
+	private void AttackPlayer()
 	{
-		isAttacking = isAttack;
-		if(isAttacking == true)
-		{
-			Debug.Log("Deal Damage");
-			isWalking = false;
-		}
-		else
-		{
-			Debug.Log("isWalking");
-			isWalking = true;
-		}
+		Debug.Log("Deal Damage");
+		isWalking = false;
+
+		StartCoroutine(Movements());
+	}
+
+	IEnumerator Movements()
+	{
+		yield return new WaitForSeconds(1);
+		isWalking = true;
+	}
+
+	private void AttackHome()
+	{
+		Debug.Log("Deal Massive Home Damage");
+		isWalking = false;
+
+		StartCoroutine(RepeatAttack());
+	}
+
+	IEnumerator RepeatAttack()
+	{
+		yield return new WaitForSeconds(timerHomeAttack);
+		AttackHome();
 	}
 
 	public override void TakeDamage()
@@ -54,13 +65,16 @@ public class Goblin : Character
 		base.TakeDamage();
 	}
 
-	private void OnEnable()
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		HitBoxTrigger.HitEvent += Attack;
-	}
+		if (collision.gameObject.tag == "Player")
+		{
+			AttackPlayer();
+		}
 
-	private void OnDisable()
-	{
-		HitBoxTrigger.HitEvent -= Attack;
+		if (collision.gameObject.tag == "Home")
+		{
+			AttackHome();
+		}
 	}
 }
