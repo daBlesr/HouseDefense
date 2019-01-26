@@ -95,14 +95,11 @@ public class Goblin : Character
 	{
 		//If Hit, TakeDamage
 
-		if(DamageEvent != null)
-		{
-			DamageEvent(10);
-		}
+		
 
 
 
-		if(100 <= 0)
+		if(health.Health <= 0)
 		{
 			//Play Dead Animation
 			if (CoinUpEvent != null)
