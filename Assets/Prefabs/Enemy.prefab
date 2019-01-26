@@ -142,8 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7f616471884d7142b93038efaefbe6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinValue: 5
-  player: {fileID: 0}
+  player: {fileID: 2505187679898816154, guid: db648cae48141e44f8e806c6f29490c7, type: 3}
   hitBoxEnemy: {fileID: 4694203993634550206}
 --- !u!1 &4694203993634550206
 GameObject:

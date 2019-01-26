@@ -15,7 +15,6 @@ public class Goblin : Character
 	private bool isWalking = false;
 
     private Health health;
-	[SerializeField] private Image goblinHealthBar;
     private float previousAttackTime;
 
 	// Start is called before the first frame update
@@ -24,7 +23,12 @@ public class Goblin : Character
 		moveSpeed += 1 * Time.deltaTime;
 		isWalking = true;
 
-        health = new Health(3, goblinHealthBar);
+        health = new Health(3);
+    }
+
+    private void OnGUI()
+    {
+        health.updateHealthBar(transform.position);
     }
 
     // Update is called once per frame
@@ -46,7 +50,6 @@ public class Goblin : Character
 	{
 		if(isWalking == true)
 		{
-            Debug.Log("iswalking");
 			this.gameObject.transform.position += new Vector3(-moveSpeed, 0, 0);
 			Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 		}
@@ -54,7 +57,6 @@ public class Goblin : Character
 
 	private void AttackPlayer()
 	{
-        Debug.Log("isattacking");
         AttackPlayerEvent?.Invoke(1);
     }
 
@@ -67,9 +69,7 @@ public class Goblin : Character
 	{
         if (collision.gameObject.tag == "Player")
 		{
-            Debug.Log("Faced Player");
             isWalking = false;
-            Debug.Log(Time.time - previousAttackTime);
             if (Time.time - previousAttackTime >= 1)
             {
                 AttackPlayer();

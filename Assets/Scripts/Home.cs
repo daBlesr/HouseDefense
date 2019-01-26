@@ -4,12 +4,16 @@ using UnityEngine.UI;
 public class Home : MonoBehaviour
 {
 	private Health health;
-	[SerializeField] private Image homeBarImage;
 
     // Start is called before the first frame update
     void Start()
     {
-        health = new Health(30, homeBarImage);
+        health = new Health(30);
+    }
+
+    private void OnGUI()
+    {
+        health.updateHealthBar(transform.position);
     }
 
     // Update is called once per frame
