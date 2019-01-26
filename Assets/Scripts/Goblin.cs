@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine.UI;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class Goblin : Character
 {
 	public static Action<int> CoinUpEvent;
 	public static Action<int> DamageEvent;
+	public static Action<int> AttackHomeEvent;
+	public static Action<int> AttackPlayerEvent;
 
 	[SerializeField] private int coinValue = 5;
 	[SerializeField] private GameObject player;
@@ -14,18 +17,34 @@ public class Goblin : Character
 	private bool isWalking = false;
 	private float timerHomeAttack = 2f;
 
+	private HealthSystem health = new HealthSystem();
+	[SerializeField] private Image goblinHealthBar;
 
 	// Start is called before the first frame update
 	void Start()
     {
 		moveSpeed += 1 * Time.deltaTime;
 		isWalking = true;
+
+		health.MaxHealth = 100;
+		health.Health = health.MaxHealth;
+		goblinHealthBar.fillAmount = (health.Health / 100);
 	}
 
     // Update is called once per frame
     void Update()
     {
 		Movement();	
+	}
+
+
+	void WhenHit(int damage)
+	{
+		if (health.Health > 0)
+		{
+			health.Health -= damage;
+			goblinHealthBar.fillAmount = (health.Health / 100);
+		}
 	}
 
 	private void Movement()
@@ -41,8 +60,11 @@ public class Goblin : Character
 	{
 		Debug.Log("Deal Damage");
 		isWalking = false;
-		TakeDamage();
 		StartCoroutine(Movements());
+		if(AttackPlayerEvent != null)
+		{
+			AttackPlayerEvent(20);
+		}
 	}
 
 	IEnumerator Movements()
@@ -55,7 +77,11 @@ public class Goblin : Character
 	{
 		Debug.Log("Deal Massive Home Damage");
 		isWalking = false;
-		TakeDamage();
+
+		if (AttackHomeEvent != null)
+		{
+			AttackHomeEvent(10);
+		}
 		StartCoroutine(RepeatAttack());
 	}
 
@@ -74,9 +100,9 @@ public class Goblin : Character
 			DamageEvent(10);
 		}
 
-		Debug.Log(HealthSystem.Instance.Health);
 
-		if(HealthSystem.Instance.Health <= 0)
+
+		if(100 <= 0)
 		{
 			//Play Dead Animation
 			if (CoinUpEvent != null)

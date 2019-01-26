@@ -1,10 +1,15 @@
 ﻿using System;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
+
+	private HealthSystem health = new HealthSystem();
+	[SerializeField] private Image playerHealthImage;
+
 
     private Rigidbody2D rigid;
     private Vector2 velocity = new Vector2(0,0);
@@ -21,7 +26,11 @@ public class PlayerJump : MonoBehaviour
     {
         // this.gameObject.transform.SetPositionAndRotation(position, rotation);
         rigid = GetComponent<Rigidbody2D>();
-    }
+
+		health.MaxHealth = 100;
+		health.Health = health.MaxHealth;
+		playerHealthImage.fillAmount = (health.Health / 100);
+	}
 
     // Update is called once per frame
     void Update()
@@ -31,10 +40,10 @@ public class PlayerJump : MonoBehaviour
         Jump();
         Walk();
 
-        rigid.velocity = velocity;
+		rigid.velocity = velocity;
     }
 
-    private void Walk()
+	private void Walk()
     {
         float horizontalAxis = Input.GetAxis("Horizontal");
         
@@ -77,4 +86,23 @@ public class PlayerJump : MonoBehaviour
             isJumping = true;
         }
     }
+
+	void WhenHit(int damage)
+	{
+		if (health.Health > 0)
+		{
+			health.Health -= damage;
+			playerHealthImage.fillAmount = (health.Health / 100);
+		}
+	}
+
+	private void OnEnable()
+	{
+		Goblin.AttackPlayerEvent += WhenHit;
+	}
+
+	private void OnDisable()
+	{
+		Goblin.AttackPlayerEvent -= WhenHit;
+	}
 }
