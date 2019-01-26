@@ -13,10 +13,10 @@ public class Goblin : Character
 	[SerializeField] private GameObject hitBoxEnemy;
 
 	private bool isWalking = false;
-	private float timerHomeAttack = 2f;
 
     private Health health;
 	[SerializeField] private Image goblinHealthBar;
+    private float previousAttackTime;
 
 	// Start is called before the first frame update
 	void Start()
@@ -31,6 +31,10 @@ public class Goblin : Character
     void Update()
     {
 		Movement();	
+        if (health.isDead())
+        {
+            Destroy(this.gameObject);
+        }
 	}
 
 	void takeDamage(int damage)
@@ -42,6 +46,7 @@ public class Goblin : Character
 	{
 		if(isWalking == true)
 		{
+            Debug.Log("iswalking");
 			this.gameObject.transform.position += new Vector3(-moveSpeed, 0, 0);
 			Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 		}
@@ -49,47 +54,49 @@ public class Goblin : Character
 
 	private void AttackPlayer()
 	{
-        Debug.Log("Attacking player");
-		isWalking = false;
-		StartCoroutine(Movements());
+        Debug.Log("isattacking");
         AttackPlayerEvent?.Invoke(1);
     }
 
-	IEnumerator Movements()
-	{
-		yield return new WaitForSeconds(1);
-		isWalking = true;
-	}
-
 	private void AttackHome()
 	{
-		Debug.Log("Deal Massive Home Damage");
-		isWalking = false;
-        StartCoroutine(RepeatAttack());
         AttackHomeEvent?.Invoke(1);
 	}
 
-	IEnumerator RepeatAttack()
+	private void OnTriggerStay2D(Collider2D collision)
 	{
-		yield return new WaitForSeconds(timerHomeAttack);
-		AttackHome();
-	}
-
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
 		{
-			AttackPlayer();
-		}
+            Debug.Log("Faced Player");
+            isWalking = false;
+            Debug.Log(Time.time - previousAttackTime);
+            if (Time.time - previousAttackTime >= 1)
+            {
+                AttackPlayer();
+                previousAttackTime = Time.time;
+            }
+            return;
+        }
 
 		if (collision.gameObject.tag == "Home")
 		{
-			AttackHome();
-		}
+            isWalking = false;
+            if (Time.time - previousAttackTime >= 1)
+            {
+                AttackHome();
+                previousAttackTime = Time.time;
+            }
+            return;
+        }
 
+        isWalking = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
         if (collision.gameObject.tag == "Bullet")
         {
             takeDamage(1);
         }
-	}
+    }
 }
