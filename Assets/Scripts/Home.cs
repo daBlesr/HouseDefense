@@ -3,35 +3,32 @@ using UnityEngine.UI;
 
 public class Home : MonoBehaviour
 {
-	private HealthSystem health = new HealthSystem();
-	[SerializeField] private Image homeBarImage;
+	private Health health;
 
     // Start is called before the first frame update
     void Start()
     {
-		health.MaxHealth = 100;
-		health.Health = health.MaxHealth;
-		homeBarImage.fillAmount = (health.Health/100);
-	}
+        health = new Health(30, 6, 4);
+    }
+
+    private void OnGUI()
+    {
+        health.updateHealthBar(transform.position);
+    }
 
     // Update is called once per frame
-    void WhenHit(int damage)
+    void takeDamage(int damage)
     {
-		if(health.Health > 0)
-		{
-			health.Health -= damage;
-			Debug.Log(health.Health);
-			homeBarImage.fillAmount = (health.Health/100);
-		}
+        health.takeDamage(damage);
 	}
 
 	private void OnEnable()
 	{
-		Goblin.AttackHomeEvent += WhenHit;
+		Goblin.AttackHomeEvent += takeDamage;
 	}
 
 	private void OnDisable()
 	{
-		Goblin.AttackHomeEvent -= WhenHit;
+		Goblin.AttackHomeEvent -= takeDamage;
 	}
 }
