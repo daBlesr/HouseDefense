@@ -23,7 +23,7 @@ public class Goblin : Character
 		moveSpeed += 1 * Time.deltaTime;
 		isWalking = true;
 
-        health = new Health(3);
+        health = new Health(3, 3, 2, -4);
     }
 
     private void OnGUI()

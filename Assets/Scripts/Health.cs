@@ -6,18 +6,20 @@ public class Health
 	private int health;
 	private int maxHealth;
     private readonly float scale;
-    private readonly float offset;
-    private float healthbarWidth = 1f;
+    private readonly float vOffset;
+	private readonly float hOffset;
+	private float healthbarWidth = 1f;
     private float healthbarHeight = 0.2f;
     private GameObject fullHealth = GameObject.CreatePrimitive(PrimitiveType.Cube);
     private GameObject currentHealth = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-    public Health(int maxHealth, float scale = 1, float offset = 0)
+    public Health(int maxHealth, float scale = 1, float vOffset = 0, float hOffset = 0)
     {
 		this.maxHealth = maxHealth;
         this.scale = scale;
-        this.offset = offset;
-        health = this.maxHealth;
+        this.vOffset = vOffset;
+		this.hOffset = hOffset;
+		health = this.maxHealth;
 
         fullHealth.GetComponent<Renderer>().material.color = Color.red;
         currentHealth.GetComponent<Renderer>().material.color = Color.green;
@@ -26,8 +28,8 @@ public class Health
     public void updateHealthBar(Vector2 pos)
     {
         fullHealth.transform.position = new Vector3(
-            pos.x, 
-            pos.y + 2 + offset, 
+            pos.x + hOffset, 
+            pos.y + 2 + vOffset, 
             1
         );
 
@@ -40,8 +42,8 @@ public class Health
         float percentage = ((float) health) / maxHealth;
 
         currentHealth.transform.position = new Vector3(
-            pos.x - healthbarWidth * scale / 2 + healthbarWidth * percentage * scale / 2, 
-            pos.y + 2 + offset, 
+            pos.x + hOffset - healthbarWidth * scale / 2 + healthbarWidth * percentage * scale / 2, 
+            pos.y + 2 + vOffset, 
             1
         );
 
