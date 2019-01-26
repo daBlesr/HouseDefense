@@ -1,24 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform player;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-               
-    }
-
+    [SerializeField] private Transform player;
+	[SerializeField] private float offset = 10;
     // Update is called once per frame
     void Update()
     {
-		transform.position = new Vector3(
-			Mathf.Lerp(transform.position.x, player.position.x, Time.deltaTime * 2f),
-			0,
-			transform.position.z
-        );
+		transform.position = new Vector3(Mathf.Lerp(transform.position.x, player.position.x, Time.deltaTime * 2f), offset, transform.position.z);
     }
 }
