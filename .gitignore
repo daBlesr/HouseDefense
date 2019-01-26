@@ -6,6 +6,7 @@
 Logs/
 Packages/
 Assets/AssetStoreTools*
+.plastic/
 
 # Visual Studio cache directory
 .vs/
