@@ -20,7 +20,7 @@ public class VerticalPlatform : MonoBehaviour
 			platformeffect.rotationalOffset = 180f;
 		}
 
-		if (Input.GetButtonDown("JumpPs4"))
+		if (Input.GetButtonDown("Jump"))
 		{
 			platformeffect.rotationalOffset = 0f;
 		}
