@@ -12,13 +12,10 @@ public class Character : MonoBehaviour
 
 	private float speed;
 
-	public float health;
-	private float maxHealth = 100;
-
     // Start is called before the first frame update
     private void Start()
     {
-		health = maxHealth;
+	
     }
 
     // Update is called once per frame
@@ -29,6 +26,6 @@ public class Character : MonoBehaviour
 
 	public virtual void TakeDamage()
 	{
-		health -= 10; //Damage
+		//Damage
 	}
 }

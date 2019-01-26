@@ -5,6 +5,7 @@ using UnityEngine;
 public class Goblin : Character
 {
 	public static Action<int> CoinUpEvent;
+	public static Action<int> DamageEvent;
 
 	[SerializeField] private int coinValue = 5;
 	[SerializeField] private GameObject player;
@@ -19,7 +20,6 @@ public class Goblin : Character
     {
 		moveSpeed += 1 * Time.deltaTime;
 		isWalking = true;
-		TakeDamage();
 	}
 
     // Update is called once per frame
@@ -41,7 +41,7 @@ public class Goblin : Character
 	{
 		Debug.Log("Deal Damage");
 		isWalking = false;
-
+		TakeDamage();
 		StartCoroutine(Movements());
 	}
 
@@ -55,7 +55,7 @@ public class Goblin : Character
 	{
 		Debug.Log("Deal Massive Home Damage");
 		isWalking = false;
-
+		TakeDamage();
 		StartCoroutine(RepeatAttack());
 	}
 
@@ -68,11 +68,15 @@ public class Goblin : Character
 	public override void TakeDamage()
 	{
 		//If Hit, TakeDamage
-		base.TakeDamage();
 
-		health -= 1000; //Test for coins
+		if(DamageEvent != null)
+		{
+			DamageEvent(10);
+		}
 
-		if(health <= 0)
+		Debug.Log(HealthSystem.Instance.Health);
+
+		if(HealthSystem.Instance.Health <= 0)
 		{
 			//Play Dead Animation
 			if (CoinUpEvent != null)
