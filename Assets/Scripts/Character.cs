@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
 
 	private float speed;
 
-	private float health;
+	public float health;
 	private float maxHealth = 100;
 
     // Start is called before the first frame update
