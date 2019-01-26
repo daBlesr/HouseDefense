@@ -14,7 +14,7 @@ public class VerticalPlatform : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		translation = Input.GetAxis("VerticalPs4");
+		translation = Input.GetAxis("Vertical");
 		if(translation >= 1)
 		{
 			platformeffect.rotationalOffset = 180f;
