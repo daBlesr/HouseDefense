@@ -30,11 +30,21 @@ public class PlayerShoot : MonoBehaviour
     private void changeLookDirection()
     {
         float horizontalAxis = Input.GetAxis("RightStickHorizontal");
+        Vector3 pivotPoint = this.gameObject.transform.parent.position;
 
         if (Mathf.Abs(horizontalAxis) > 0.3f && -Mathf.Sign(horizontalAxis) != lookDirection)
         {
             lookDirection = -lookDirection;
+
+            // flip sprite.
             this.rendererForSprite.flipY = lookDirection == 1 ? false : true;
+
+            // flip arm 180 degrees around Y axis.
+            this.gameObject.transform.RotateAround(
+                pivotPoint,
+                new Vector3(0, 1, 0),
+                180
+            );
         }
     }
 
@@ -61,13 +71,16 @@ public class PlayerShoot : MonoBehaviour
         if (shot)
         {
             Rigidbody2D newBullet = Instantiate(bullet, transform.position, transform.rotation);
-            float rotation = Mathf.Deg2Rad * (this.transform.localEulerAngles.z - 90f);
+            float rotation = Mathf.Deg2Rad * (this.transform.localEulerAngles.z - 90f); ;
+            
             Vector2 horizontalShot = new Vector2(bulletVelocity, 0);
             float length = horizontalShot.magnitude;
             newBullet.velocity = new Vector2(
-                length * Mathf.Cos(rotation),
+                lookDirection * length * Mathf.Cos(rotation),
                 length * Mathf.Sin(rotation)
             );
+
+            Debug.Log(newBullet.velocity);
         }
     }
 }
