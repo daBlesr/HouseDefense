@@ -637,6 +637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 1177087684}
+  amount: 0
 --- !u!114 &1177087684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1332,6 +1333,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2505187679898816133, guid: db648cae48141e44f8e806c6f29490c7,
+        type: 3}
+      propertyPath: playerHealthImage
+      value: 
+      objectReference: {fileID: 1637879605}
+    - target: {fileID: 4545050688940715689, guid: db648cae48141e44f8e806c6f29490c7,
         type: 3}
       propertyPath: playerHealthImage
       value: 

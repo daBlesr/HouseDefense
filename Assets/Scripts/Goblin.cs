@@ -5,19 +5,17 @@ using UnityEngine;
 
 public class Goblin : Character
 {
-	public static Action<int> CoinUpEvent;
 	public static Action<int> DamageEvent;
 	public static Action<int> AttackHomeEvent;
 	public static Action<int> AttackPlayerEvent;
 
-	[SerializeField] private int coinValue = 5;
 	[SerializeField] private GameObject player;
 	[SerializeField] private GameObject hitBoxEnemy;
 
 	private bool isWalking = false;
 	private float timerHomeAttack = 2f;
 
-	private HealthSystem health = new HealthSystem();
+    private Health health;
 	[SerializeField] private Image goblinHealthBar;
 
 	// Start is called before the first frame update
@@ -26,10 +24,8 @@ public class Goblin : Character
 		moveSpeed += 1 * Time.deltaTime;
 		isWalking = true;
 
-		health.MaxHealth = 100;
-		health.Health = health.MaxHealth;
-		goblinHealthBar.fillAmount = (health.Health / 100);
-	}
+        health = new Health(3, goblinHealthBar);
+    }
 
     // Update is called once per frame
     void Update()
@@ -37,14 +33,9 @@ public class Goblin : Character
 		Movement();	
 	}
 
-
-	void WhenHit(int damage)
+	void takeDamage(int damage)
 	{
-		if (health.Health > 0)
-		{
-			health.Health -= damage;
-			goblinHealthBar.fillAmount = (health.Health / 100);
-		}
+        health.takeDamage(damage);
 	}
 
 	private void Movement()
@@ -58,14 +49,11 @@ public class Goblin : Character
 
 	private void AttackPlayer()
 	{
-		Debug.Log("Deal Damage");
+        Debug.Log("Attacking player");
 		isWalking = false;
 		StartCoroutine(Movements());
-		if(AttackPlayerEvent != null)
-		{
-			AttackPlayerEvent(20);
-		}
-	}
+        AttackPlayerEvent?.Invoke(1);
+    }
 
 	IEnumerator Movements()
 	{
@@ -77,36 +65,14 @@ public class Goblin : Character
 	{
 		Debug.Log("Deal Massive Home Damage");
 		isWalking = false;
-
-		if (AttackHomeEvent != null)
-		{
-			AttackHomeEvent(10);
-		}
-		StartCoroutine(RepeatAttack());
+        StartCoroutine(RepeatAttack());
+        AttackHomeEvent?.Invoke(1);
 	}
 
 	IEnumerator RepeatAttack()
 	{
 		yield return new WaitForSeconds(timerHomeAttack);
 		AttackHome();
-	}
-
-	public override void TakeDamage()
-	{
-		//If Hit, TakeDamage
-
-		
-
-
-
-		if(health.Health <= 0)
-		{
-			//Play Dead Animation
-			if (CoinUpEvent != null)
-			{
-				CoinUpEvent(coinValue);
-			}
-		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -120,5 +86,10 @@ public class Goblin : Character
 		{
 			AttackHome();
 		}
+
+        if (collision.gameObject.tag == "Bullet")
+        {
+            takeDamage(1);
+        }
 	}
 }
