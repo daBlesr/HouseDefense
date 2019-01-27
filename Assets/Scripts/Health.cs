@@ -27,6 +27,11 @@ public class Health
 
     public void updateHealthBar(Vector2 pos)
     {
+        if (!fullHealth || !currentHealth)
+        {
+            return;
+        }
+
         fullHealth.transform.position = new Vector3(
             pos.x + hOffset, 
             pos.y + 2 + vOffset, 

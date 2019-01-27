@@ -49,21 +49,23 @@ public class PlayerJump : MonoBehaviour
 	private void Walk()
     {
         float horizontalAxis = Input.GetAxis("Horizontal");
-        
+        int lookDirection = gameObject.transform.rotation.eulerAngles.y == 180 ? -1 : 1;
+
+
         if (Math.Abs(horizontalAxis) > 0) {
             
             if (isJumping && (Math.Sign(horizontalAxis) != Math.Sign(horDirection) || turned))
             {
                 // mid air movement by turning around, drag is applied.
                 rigid.transform.Translate(new Vector2(
-                    horizontalAxis * walkVelocity * midAirDrag * Time.deltaTime,
+                    lookDirection * horizontalAxis * walkVelocity * midAirDrag * Time.deltaTime,
                     0
                 ));
                 turned = true;
             } else
             {
                 rigid.transform.Translate(new Vector2(
-                    horizontalAxis * walkVelocity * Time.deltaTime,
+                    lookDirection * horizontalAxis * walkVelocity * Time.deltaTime,
                     0
                 ));
 
@@ -85,7 +87,7 @@ public class PlayerJump : MonoBehaviour
 
     private void Jump()
 	{
-        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Space)))
+        if (Input.GetButtonDown("Jump") && !isJumping)
         {
             velocity.y = jumpVelocity;
             isJumping = true;

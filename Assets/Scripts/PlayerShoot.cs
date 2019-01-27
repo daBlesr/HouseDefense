@@ -5,12 +5,14 @@ using UnityEngine;
 public class PlayerShoot : MonoBehaviour
 {
     private SpriteRenderer rendererForSprite;
-    private float aimSensitivity = 80f;
+    private float aimSensitivity = 120f;
     private int lookDirection = 1;
     public Rigidbody2D bullet;
     private float bulletVelocity = 20f;
     private LineRenderer trajectory;
     bool isAiming = false;
+    private Vector3 crossbowOffset = new Vector3(0, 0.5f, 0);
+    private Vector3 shoulderPivot = new Vector3(1.0f, 4f, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +27,7 @@ public class PlayerShoot : MonoBehaviour
         changeLookDirection();
         rotateArm();
 
-        float rad = Mathf.Deg2Rad * (this.transform.localEulerAngles.z - 90f); ;
+        float rad = Mathf.Deg2Rad * this.transform.localEulerAngles.z;
         Vector2 velocity = new Vector2(
             lookDirection * bulletVelocity * Mathf.Cos(rad),
             bulletVelocity * Mathf.Sin(rad)
@@ -45,16 +47,15 @@ public class PlayerShoot : MonoBehaviour
         {
             lookDirection = -lookDirection;
 
-            // flip sprite.
-            this.rendererForSprite.flipX = lookDirection == 1 ? false : true;
-            this.gameObject.transform.parent.GetComponent<SpriteRenderer>().flipX = lookDirection == 1 ? false : true;
-
-            // flip arm 180 degrees around Y axis.
-            this.gameObject.transform.RotateAround(
+            // flip character 180 degrees around Y axis.
+            this.gameObject.transform.parent.RotateAround(
                 pivotPoint,
                 new Vector3(0, 1, 0),
                 180
             );
+
+            // flip shoulder pivot 180 degrees.
+            shoulderPivot = new Vector3(-shoulderPivot.x, shoulderPivot.y, shoulderPivot.z);
         }
     }
 
@@ -62,14 +63,21 @@ public class PlayerShoot : MonoBehaviour
     private void rotateArm()
     {
         float verticalAxis = Input.GetAxis("RightStickVertical");
-        Vector3 pivotPoint = this.gameObject.transform.parent.position;
+        Vector3 pivotPoint = gameObject.transform.parent.position + shoulderPivot;
+        float angle = lookDirection * verticalAxis * aimSensitivity * Time.deltaTime;
+        float zAngle = Mathf.DeltaAngle(gameObject.transform.rotation.eulerAngles.z, 0);
+
+        if ( (zAngle > 80 && lookDirection * angle < 0) || (zAngle < -80 && lookDirection * angle > 0))
+        { 
+            return;
+        }
 
         if (Mathf.Abs(verticalAxis) > 0)
         {
             this.gameObject.transform.RotateAround(
                 pivotPoint, // rotate around..
                 new Vector3(0, 0, 1), // using axis..
-                lookDirection * verticalAxis * aimSensitivity * Time.deltaTime // with angle..
+                angle // with angle..
             );
         }
     }
@@ -80,7 +88,7 @@ public class PlayerShoot : MonoBehaviour
         bool shot = Input.GetButtonDown("Fire1");
         if (shot)
         {
-            Rigidbody2D newBullet = Instantiate(bullet, transform.position, transform.rotation);
+            Rigidbody2D newBullet = Instantiate(bullet, transform.position + crossbowOffset, transform.rotation);
             newBullet.velocity = velocity;
         }
     }
@@ -111,7 +119,7 @@ public class PlayerShoot : MonoBehaviour
             Vector3[] points = Trajectory.Compute(
                 bulletVelocity,
                 rad,
-                transform.position,
+                transform.position + crossbowOffset,
                 trajectory.positionCount,
                 lookDirection
             );
