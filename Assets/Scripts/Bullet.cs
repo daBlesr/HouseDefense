@@ -22,11 +22,11 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "Player")
-        {
-            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collision.collider);
-        }
-	}
+ //   private void OnTriggerEnter2D(Collision2D collision)
+ //   {
+ //       if (collision.collider.tag == "Player")
+ //       {
+ //           Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collision.collider);
+ //       }
+	//}
 }

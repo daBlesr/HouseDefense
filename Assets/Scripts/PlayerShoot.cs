@@ -11,7 +11,7 @@ public class PlayerShoot : MonoBehaviour
     private float bulletVelocity = 20f;
     private LineRenderer trajectory;
     bool isAiming = false;
-    private Vector3 crossbowOffset = new Vector3(0, 0.5f, 0);
+    private Vector3 crossbowOffset = new Vector3(0, 0.5f, 0.1f);
     private Vector3 shoulderPivot = new Vector3(1.0f, 4f, 0);
 
     // Start is called before the first frame update
