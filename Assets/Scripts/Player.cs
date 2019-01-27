@@ -4,8 +4,6 @@ using System;
 
 public class Player : MonoBehaviour
 {
-	public static Action playerDeadEvent;
-
     private Health health;
 	private Animator anim; 
 
@@ -22,10 +20,6 @@ public class Player : MonoBehaviour
 			this.health.destroy();
 			anim.SetBool("isDead", true);
 			Destroy(this.gameObject, 4);
-			if(playerDeadEvent != null)
-			{
-				playerDeadEvent();
-			}
 
 			gameObject.GetComponent<PauseMenu>().GameOver();
 		}

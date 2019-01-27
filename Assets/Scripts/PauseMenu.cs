@@ -79,14 +79,4 @@ public class PauseMenu : MonoBehaviour
 	{
 		GameOverMenu.SetActive(true);
 	}
-
-	private void OnEnable()
-	{
-		Player.playerDeadEvent += ActivateGameOver;
-	}
-
-	private void OnDisable()
-	{
-		Player.playerDeadEvent += ActivateGameOver;
-	}
 }
