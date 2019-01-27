@@ -46,7 +46,8 @@ public class PlayerShoot : MonoBehaviour
             lookDirection = -lookDirection;
 
             // flip sprite.
-            this.rendererForSprite.flipY = lookDirection == 1 ? false : true;
+            this.rendererForSprite.flipX = lookDirection == 1 ? false : true;
+            this.gameObject.transform.parent.GetComponent<SpriteRenderer>().flipX = lookDirection == 1 ? false : true;
 
             // flip arm 180 degrees around Y axis.
             this.gameObject.transform.RotateAround(
@@ -119,7 +120,7 @@ public class PlayerShoot : MonoBehaviour
                 trajectory.SetPosition(
                     i, 
                     new Vector3(
-                        bulletVelocity * t * Mathf.Cos(rad) ,
+                        lookDirection * bulletVelocity * t * Mathf.Cos(rad) ,
                         bulletVelocity * t * Mathf.Sin(rad) - 0.5f * 9.8f * t * t,
                         0
                     ) + transform.position

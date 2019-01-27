@@ -18,7 +18,6 @@ public class PlayerJump : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // this.gameObject.transform.SetPositionAndRotation(position, rotation);
         rigid = GetComponent<Rigidbody2D>();
 	}
 
