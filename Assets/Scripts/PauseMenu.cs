@@ -1,0 +1,59 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class PauseMenu : MonoBehaviour
+{
+
+	[SerializeField] private GameObject pauseMenu;
+	[SerializeField] private GameObject quitMenu;
+	[SerializeField] private GameObject GameOverMenu;
+
+	[SerializeField] private Button resumeButton;
+ 
+    // Start is called before the first frame update
+    void Start()
+    {
+		pauseMenu.SetActive(false);
+		quitMenu.SetActive(false);
+		GameOverMenu.SetActive(false);
+	}
+
+	private void Update()
+	{
+		PauseGame();
+	}
+
+	private void PauseGame()
+	{
+		if(Input.GetButtonDown("Pause"))
+		{
+			pauseMenu.SetActive(true);
+			Time.timeScale = 0;
+			resumeButton.Select();
+		}
+	}
+
+    public void Resume() //Jumps when exits pauseScreen;
+	{
+		pauseMenu.SetActive(false);
+		Time.timeScale = 1;
+	}
+
+	public void Quit()
+	{
+
+	}
+
+	public void GameOver()
+	{
+		GameOverMenu.SetActive(true);
+	}
+
+	public void BackToMenu(string name)
+	{
+		SceneManager.LoadScene(name);
+	}
+}
