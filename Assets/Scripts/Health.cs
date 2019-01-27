@@ -25,8 +25,8 @@ public class Health
         {
             fullHealth = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentHealth = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            fullHealth.GetComponent<Renderer>().material.color = Color.red;
-            currentHealth.GetComponent<Renderer>().material.color = Color.green;
+			fullHealth.GetComponent<Renderer>().material.color = new Color(1, 0, 0);
+            currentHealth.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
         }        
     }
 
