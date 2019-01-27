@@ -4798,7 +4798,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &924500419
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5190,6 +5190,11 @@ PrefabInstance:
       propertyPath: resumeButton
       value: 
       objectReference: {fileID: 924500420}
+    - target: {fileID: 5260552489038325763, guid: 54a9d0d68c847684c8d4081cca3a87cf,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54a9d0d68c847684c8d4081cca3a87cf, type: 3}
 --- !u!1 &960224340
@@ -5204,6 +5209,7 @@ GameObject:
   - component: {fileID: 960224343}
   - component: {fileID: 960224342}
   - component: {fileID: 960224341}
+  - component: {fileID: 960224345}
   m_Layer: 0
   m_Name: Home
   m_TagString: Home
@@ -5249,6 +5255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4249322449b0e994ca1a88085c799512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HomeHealthBar: {fileID: 1693161806}
 --- !u!212 &960224343
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5311,6 +5318,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &960224345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960224340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d88b4d85c3b5314888e84f23e17efff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 905956724}
+  GameOverMenu: {fileID: 1988819966}
+  resumeButton: {fileID: 924500420}
 --- !u!1 &973862155
 GameObject:
   m_ObjectHideFlags: 0
