@@ -9,17 +9,20 @@ public class PlayerJump : MonoBehaviour
     private Rigidbody2D rigid;
     private Vector2 velocity = new Vector2(0,0);
 	private bool isJumping = false;
-    private float jumpVelocity = 20f;
+    [SerializeField] private float jumpVelocity = 20f;
     private const float walkVelocity = 10;
     private const float midAirDrag = 0.7f;
     private int horDirection = 1;
     private Boolean turned = false;
+
+	private Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         // this.gameObject.transform.SetPositionAndRotation(position, rotation);
         rigid = GetComponent<Rigidbody2D>();
+		anim = GetComponent<Animator>();
 	}
 
     // Update is called once per frame
@@ -27,11 +30,22 @@ public class PlayerJump : MonoBehaviour
     {
         velocity = rigid.velocity;
 
-        Jump();
+		Idle();
+		Jump();
         Walk();
 
 		rigid.velocity = velocity;
     }
+
+	private void Idle()
+	{
+		float horizontalAxis = Input.GetAxis("Horizontal");
+
+		if (Math.Abs(horizontalAxis) <= 0)
+		{
+			anim.SetBool("isWalking", false);
+		}
+	}
 
 	private void Walk()
     {
@@ -53,6 +67,8 @@ public class PlayerJump : MonoBehaviour
                     horizontalAxis * walkVelocity * Time.deltaTime,
                     0
                 ));
+
+				anim.SetBool("isWalking", true);
             }
         }
 
