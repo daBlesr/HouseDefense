@@ -88,7 +88,11 @@ public class PlayerShoot : MonoBehaviour
         bool shot = Input.GetButtonDown("Fire1");
         if (shot)
         {
-            Rigidbody2D newBullet = Instantiate(bullet, transform.position + crossbowOffset, Quaternion.Euler(0, 0, Mathf.Rad2Deg * rad));
+            Rigidbody2D newBullet = Instantiate(
+                bullet, 
+                transform.position + crossbowOffset, 
+                Quaternion.Euler(0, lookDirection == 1 ? 0 : 180, Mathf.Rad2Deg * rad)
+            );
             newBullet.velocity = velocity;
         }
     }

@@ -72,7 +72,7 @@ public class WaveSystem : MonoBehaviour
         public void spawnGoblin()
         {
             goblinsSpawned += 1;
-			Rigidbody2D newGoblin = Instantiate(this.ws.goblin, new Vector3(50, 2, 0), fakeRotation);
+			Rigidbody2D newGoblin = Instantiate(this.ws.goblin, new Vector3(50, UnityEngine.Random.Range(1, 10), 0), fakeRotation);
             previousTimeGoblinSpawned = Time.time;
         }
 
