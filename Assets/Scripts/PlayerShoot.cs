@@ -117,8 +117,8 @@ public class PlayerShoot : MonoBehaviour
             trajectory.startWidth = 0.3f;
             trajectory.endWidth = 0.3f;
             trajectory.positionCount = 100;
-            trajectory.material.shader = Shader.Find("Transparent/Diffuse");
-            trajectory.material.color = new Color(1f, 0f, 0f, 0.15f);
+            // trajectory.material.shader = Shader.Find("Transparent/Diffuse");
+            trajectory.material.color = new Color(0.5f, 0.5f, 0.5f);
 
             Vector3[] points = Trajectory.Compute(
                 bulletVelocity,
