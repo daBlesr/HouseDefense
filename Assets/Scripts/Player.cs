@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
 	void Start()
     {
-		health = new Health(10, 5, 3, 0);
+		health = new Health(10, 5, 8, 0);
 	}
 
     private void OnGUI()

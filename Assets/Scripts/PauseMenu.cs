@@ -8,7 +8,6 @@ public class PauseMenu : MonoBehaviour
 {
 
 	[SerializeField] private GameObject pauseMenu;
-	[SerializeField] private GameObject quitMenu;
 	[SerializeField] private GameObject GameOverMenu;
 
 	[SerializeField] private Button resumeButton;
@@ -17,7 +16,6 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
 		pauseMenu.SetActive(false);
-		quitMenu.SetActive(false);
 		GameOverMenu.SetActive(false);
 	}
 
@@ -53,6 +51,11 @@ public class PauseMenu : MonoBehaviour
 	}
 
 	public void BackToMenu(string name)
+	{
+		SceneManager.LoadScene(name);
+	}
+
+	public void Restart(string name)
 	{
 		SceneManager.LoadScene(name);
 	}
