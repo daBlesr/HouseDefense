@@ -11,19 +11,23 @@ public class Goblin : Character
 
 	[SerializeField] private GameObject player;
 	[SerializeField] private GameObject hitBoxEnemy;
+    [SerializeField] private Rigidbody2D axe;
 
 	private bool isWalking = false;
 
     private Health health;
     private float previousAttackTime;
+    private bool isRanger;
+    private float axeVelocity = 50f;
+    private float axeThrowDelay = 4f;
 
 	// Start is called before the first frame update
 	void Start()
     {
 		moveSpeed += 1 * Time.deltaTime;
 		isWalking = true;
-
-        health = new Health(3, 3, 2, -4);
+        isRanger = UnityEngine.Random.Range(0, 4) == 0;
+        health = new Health(5, 3, 2, -4);
     }
 
     private void OnGUI()
@@ -40,6 +44,12 @@ public class Goblin : Character
             this.health.destroy();
             Destroy(this.gameObject);
         }
+
+        if (isRanger && Time.time - previousAttackTime >= axeThrowDelay)
+        {
+            ShootAtPlayer();
+            previousAttackTime = Time.time;
+        }
 	}
 
 	void takeDamage(int damage)
@@ -55,6 +65,16 @@ public class Goblin : Character
 			Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 		}
 	}
+
+    private void ShootAtPlayer()
+    {
+        Rigidbody2D newAxe = Instantiate(axe, transform.position, transform.rotation);
+        float randomRad = Mathf.Deg2Rad * UnityEngine.Random.Range(0, 70);
+        newAxe.velocity = new Vector2(
+              - Mathf.Cos(randomRad) * axeVelocity,
+              Mathf.Sin(randomRad) * axeVelocity
+        );
+    }
 
 	private void AttackPlayer()
 	{
@@ -98,6 +118,11 @@ public class Goblin : Character
         if (collision.gameObject.tag == "Bullet")
         {
             takeDamage(1);
+        }
+
+        if (collision.gameObject.tag == "Axe")
+        {
+            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collision.collider);
         }
     }
 }

@@ -1130,6 +1130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1958405679, guid: caba259baa9888c47974e4c40be77d2c, type: 3}
   hitBoxEnemy: {fileID: 1906102481634210029}
+  axe: {fileID: 3753784712737085675, guid: 7c9ac8225bd808347a4c442d28a7ea62, type: 3}
 --- !u!50 &8182132518911211604
 Rigidbody2D:
   serializedVersion: 4
