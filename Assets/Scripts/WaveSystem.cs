@@ -8,9 +8,9 @@ public class WaveSystem : MonoBehaviour
     private Wave currentWave;
     [SerializeField] private int currentWaveNumber = 1;
     private float previousTimeWaveEnded = 0f;
-    private float interWaveTime = 5.0f;
+    private float interWaveTime = 10.0f;
     private float goblinMultiplier = 1.2f;
-    private float waveDurationMultiplier = 1.1f;
+    private float waveDurationMultiplier = 1.8f;
 
     void Start()
     {

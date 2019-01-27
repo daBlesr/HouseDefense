@@ -37,4 +37,13 @@ public class Player : MonoBehaviour
     {
         Goblin.AttackPlayerEvent -= takeDamage;
     }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Axe")
+        {
+            takeDamage(1);
+        }
+    }
 }

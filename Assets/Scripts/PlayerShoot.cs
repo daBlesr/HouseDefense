@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
-    private Renderer renderer;
     private SpriteRenderer rendererForSprite;
     private float aimSensitivity = 80f;
     private int lookDirection = 1;
     public Rigidbody2D bullet;
     private float bulletVelocity = 20f;
+    private LineRenderer trajectory;
+    bool isAiming = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        renderer = GetComponent<Renderer>();
         rendererForSprite = GetComponent<SpriteRenderer>();
+        trajectory = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -23,7 +24,15 @@ public class PlayerShoot : MonoBehaviour
     {
         changeLookDirection();
         rotateArm();
-        shoot();   
+
+        float rad = Mathf.Deg2Rad * (this.transform.localEulerAngles.z - 90f); ;
+        Vector2 velocity = new Vector2(
+            lookDirection * bulletVelocity * Mathf.Cos(rad),
+            bulletVelocity * Mathf.Sin(rad)
+        );
+
+        shoot(velocity);
+        aim(rad, velocity);
     }
 
     // change direction player is facing.
@@ -37,7 +46,8 @@ public class PlayerShoot : MonoBehaviour
             lookDirection = -lookDirection;
 
             // flip sprite.
-            this.rendererForSprite.flipY = lookDirection == 1 ? false : true;
+            this.rendererForSprite.flipX = lookDirection == 1 ? false : true;
+            this.gameObject.transform.parent.GetComponent<SpriteRenderer>().flipX = lookDirection == 1 ? false : true;
 
             // flip arm 180 degrees around Y axis.
             this.gameObject.transform.RotateAround(
@@ -65,20 +75,57 @@ public class PlayerShoot : MonoBehaviour
     }
 
     // spawn bullet if shot.
-    private void shoot()
+    private void shoot(Vector2 velocity)
     {
         bool shot = Input.GetButtonDown("Fire1");
         if (shot)
         {
             Rigidbody2D newBullet = Instantiate(bullet, transform.position, transform.rotation);
-            float rotation = Mathf.Deg2Rad * (this.transform.localEulerAngles.z - 90f); ;
-            
-            Vector2 horizontalShot = new Vector2(bulletVelocity, 0);
-            float length = horizontalShot.magnitude;
-            newBullet.velocity = new Vector2(
-                lookDirection * length * Mathf.Cos(rotation),
-                length * Mathf.Sin(rotation)
-            );
+            newBullet.velocity = velocity;
+        }
+    }
+
+    // show aim trajectory
+    private void aim(float rad, Vector2 velocity)
+    {
+
+        if (Input.GetButtonDown("Aim"))
+        {
+            isAiming = true;
+        }
+
+        if (Input.GetButtonUp("Aim"))
+        {
+            isAiming = false;
+            trajectory.positionCount = 0;
+        }
+
+        if (isAiming)
+        {
+            float rotation = Mathf.Deg2Rad * (this.transform.localEulerAngles.z - 90f);
+            trajectory.startWidth = 0.3f;
+            trajectory.endWidth = 0.3f;
+            trajectory.positionCount = 100;
+            trajectory.material.shader = Shader.Find("Transparent/Diffuse");
+            trajectory.material.color = new Color(1f, 0f, 0f, 0.15f);
+
+
+            float vSinTheta = bulletVelocity * Mathf.Sin(rad);
+            float totalTime = (vSinTheta + Mathf.Sqrt(vSinTheta * vSinTheta + 2 * 9.8f * transform.position.y)) / 9.8f;
+            float timestep = totalTime / trajectory.positionCount; 
+
+            for (int i = 0; i < trajectory.positionCount; i++)
+            {
+                float t = i * timestep;
+                trajectory.SetPosition(
+                    i, 
+                    new Vector3(
+                        lookDirection * bulletVelocity * t * Mathf.Cos(rad) ,
+                        bulletVelocity * t * Mathf.Sin(rad) - 0.5f * 9.8f * t * t,
+                        0
+                    ) + transform.position
+                );
+            }
         }
     }
 }

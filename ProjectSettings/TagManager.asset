@@ -8,6 +8,7 @@ TagManager:
   - Home
   - Bullet
   - Enemy
+  - Axe
   layers:
   - Default
   - TransparentFX
