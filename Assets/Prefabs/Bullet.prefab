@@ -141,3 +141,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08a336f71679dd45b45eee38c206c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  secondLayer: {fileID: 0}

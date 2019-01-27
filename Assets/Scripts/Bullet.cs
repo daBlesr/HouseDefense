@@ -4,18 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	[SerializeField] private GameObject secondLayer;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -25,6 +15,6 @@ public class Bullet : MonoBehaviour
         } else
         {
             Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collision.collider);
-        }
-    }
+		}
+	}
 }
