@@ -102,30 +102,21 @@ public class PlayerShoot : MonoBehaviour
 
         if (isAiming)
         {
-            float rotation = Mathf.Deg2Rad * (this.transform.localEulerAngles.z - 90f);
             trajectory.startWidth = 0.3f;
             trajectory.endWidth = 0.3f;
             trajectory.positionCount = 100;
             trajectory.material.shader = Shader.Find("Transparent/Diffuse");
             trajectory.material.color = new Color(1f, 0f, 0f, 0.15f);
 
+            Vector3[] points = Trajectory.Compute(
+                bulletVelocity,
+                rad,
+                transform.position,
+                trajectory.positionCount,
+                lookDirection
+            );
 
-            float vSinTheta = bulletVelocity * Mathf.Sin(rad);
-            float totalTime = (vSinTheta + Mathf.Sqrt(vSinTheta * vSinTheta + 2 * 9.8f * transform.position.y)) / 9.8f;
-            float timestep = totalTime / trajectory.positionCount; 
-
-            for (int i = 0; i < trajectory.positionCount; i++)
-            {
-                float t = i * timestep;
-                trajectory.SetPosition(
-                    i, 
-                    new Vector3(
-                        lookDirection * bulletVelocity * t * Mathf.Cos(rad) ,
-                        bulletVelocity * t * Mathf.Sin(rad) - 0.5f * 9.8f * t * t,
-                        0
-                    ) + transform.position
-                );
-            }
+            trajectory.SetPositions(points);
         }
     }
 }
