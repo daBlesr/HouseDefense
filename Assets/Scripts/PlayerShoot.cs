@@ -33,7 +33,7 @@ public class PlayerShoot : MonoBehaviour
             bulletVelocity * Mathf.Sin(rad)
         );
 
-        shoot(velocity);
+        shoot(rad, velocity);
         aim(rad, velocity);
     }
 
@@ -83,12 +83,12 @@ public class PlayerShoot : MonoBehaviour
     }
 
     // spawn bullet if shot.
-    private void shoot(Vector2 velocity)
+    private void shoot(float rad, Vector2 velocity)
     {
         bool shot = Input.GetButtonDown("Fire1");
         if (shot)
         {
-            Rigidbody2D newBullet = Instantiate(bullet, transform.position + crossbowOffset, transform.rotation);
+            Rigidbody2D newBullet = Instantiate(bullet, transform.position + crossbowOffset, Quaternion.Euler(0, 0, Mathf.Rad2Deg * rad));
             newBullet.velocity = velocity;
         }
     }
