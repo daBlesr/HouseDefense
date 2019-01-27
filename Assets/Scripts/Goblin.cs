@@ -70,8 +70,8 @@ public class Goblin : Character
 	{
 		if(isWalking == true)
 		{
-			anim.SetBool("isWalking", true);
 			this.gameObject.transform.position += new Vector3(-moveSpeed, 0, 0);
+			anim.SetBool("isWalking", true);
 			Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 		}
 	}
@@ -104,6 +104,7 @@ public class Goblin : Character
 			if (Time.time - previousAttackTime >= 1)
             {
                 AttackPlayer();
+				anim.SetBool("isAttacking", true);
 				previousAttackTime = Time.time;
             }
             return;
@@ -115,6 +116,7 @@ public class Goblin : Character
 			if (Time.time - previousAttackTime >= 1)
             {
                 AttackHome();
+				anim.SetBool("isAttacking", true);
 				previousAttackTime = Time.time;
             }
             return;

@@ -1,18 +1,35 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
+using System;
 
 public class Player : MonoBehaviour
 {
+	public static Action playerDeadEvent;
+
     private Health health;
+	private Animator anim; 
 
 	void Start()
     {
+		anim = GetComponent<Animator>();
 		health = new Health(10, 5, 8, 0);
 	}
 
-    private void OnGUI()
+	private void Update()
+	{
+		if (health.isDead())
+		{
+			this.health.destroy();
+			anim.SetBool("isDead", true);
+			Destroy(this.gameObject, 4);
+			if(playerDeadEvent != null)
+			{
+				playerDeadEvent();
+			}
+		}
+	}
+
+	private void OnGUI()
     {
         health.updateHealthBar(transform.position);
 	}

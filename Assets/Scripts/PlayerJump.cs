@@ -68,11 +68,9 @@ public class PlayerJump : MonoBehaviour
                     lookDirection * horizontalAxis * walkVelocity * Time.deltaTime,
                     0
                 ));
-
 				anim.SetBool("isWalking", true);
             }
         }
-
         horDirection = Math.Sign(horizontalAxis);
     }
 
@@ -80,6 +78,7 @@ public class PlayerJump : MonoBehaviour
     {
         if (collision.gameObject.tag == "Platform")
         {
+			anim.SetBool("isJumping", false);
             isJumping = false;
             turned = false;
         }
@@ -91,6 +90,8 @@ public class PlayerJump : MonoBehaviour
         {
             velocity.y = jumpVelocity;
             isJumping = true;
-        }
+			anim.SetBool("isJumping", true);
+			anim.SetBool("isWalking", false);
+		}
     }
 }

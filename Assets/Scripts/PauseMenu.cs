@@ -45,11 +45,6 @@ public class PauseMenu : MonoBehaviour
 
 	}
 
-	public void GameOver()
-	{
-		GameOverMenu.SetActive(true);
-	}
-
 	public void BackToMenu(string name)
 	{
 		SceneManager.LoadScene(name);
@@ -58,5 +53,20 @@ public class PauseMenu : MonoBehaviour
 	public void Restart(string name)
 	{
 		SceneManager.LoadScene(name);
+	}
+
+	private void ActivateGameOver()
+	{
+		GameOverMenu.SetActive(true);
+	}
+
+	private void OnEnable()
+	{
+		Player.playerDeadEvent += ActivateGameOver;
+	}
+
+	private void OnDisable()
+	{
+		Player.playerDeadEvent += ActivateGameOver;
 	}
 }

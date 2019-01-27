@@ -7,6 +7,7 @@ public class StartMenu : MonoBehaviour
 	[SerializeField] private GameObject menu_0;
 	[SerializeField] private GameObject menu_1;
 	[SerializeField] private GameObject menu_2;
+	[SerializeField] private GameObject htw1;
 
 	[SerializeField] private Button startButton;
 	[SerializeField] private Button howToPlayButton;
@@ -33,6 +34,7 @@ public class StartMenu : MonoBehaviour
 		menu_0.SetActive(false);
 		menu_1.SetActive(true);
 		menu_2.SetActive(false);
+		htw1.SetActive(true);
 	}
 
 	public void Credits()
