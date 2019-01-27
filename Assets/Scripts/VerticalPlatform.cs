@@ -17,7 +17,7 @@ public class VerticalPlatform : MonoBehaviour
 		translation = Input.GetAxis("Vertical");
 		if(translation >= 1)
 		{
-			platformeffect.rotationalOffset = 180f;
+            platformeffect.rotationalOffset = 180f;
 		}
 
 		if (Input.GetButtonDown("Jump"))
@@ -25,4 +25,12 @@ public class VerticalPlatform : MonoBehaviour
 			platformeffect.rotationalOffset = 0f;
 		}
 	}
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Bullet")
+        {
+            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), collision.collider);
+        }
+    }
 }

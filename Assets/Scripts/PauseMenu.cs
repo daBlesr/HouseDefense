@@ -9,8 +9,9 @@ public class PauseMenu : MonoBehaviour
 
 	[SerializeField] private GameObject pauseMenu;
 	[SerializeField] private GameObject GameOverMenu;
-
 	[SerializeField] private Button resumeButton;
+
+    private bool isPaused = false;
  
     // Start is called before the first frame update
     void Start()
@@ -21,29 +22,48 @@ public class PauseMenu : MonoBehaviour
 
 	private void Update()
 	{
-		PauseGame();
+		OnPauseGame();
 	}
 
-	private void PauseGame()
+	private void OnPauseGame()
 	{
 		if(Input.GetButtonDown("Pause"))
 		{
-			pauseMenu.SetActive(true);
-			Time.timeScale = 0;
-			resumeButton.Select();
+            if (!isPaused)
+            {
+                Pause();   
+            } else
+            {
+                Resume();
+            }
 		}
 	}
+
+    public void Pause()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0;
+        resumeButton.Select();
+        isPaused = true;
+    }
 
     public void Resume() //Jumps when exits pauseScreen;
 	{
 		pauseMenu.SetActive(false);
 		Time.timeScale = 1;
-	}
+        isPaused = false;
+    }
 
 	public void Quit()
 	{
 
 	}
+
+	public void GameOver()
+	{
+		GameOverMenu.SetActive(true);
+        Time.timeScale = 0;
+    }
 
 	public void BackToMenu(string name)
 	{

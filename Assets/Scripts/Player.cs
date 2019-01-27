@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
 			{
 				playerDeadEvent();
 			}
+
+			gameObject.GetComponent<PauseMenu>().GameOver();
 		}
 	}
 

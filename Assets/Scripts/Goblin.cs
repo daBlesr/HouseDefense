@@ -31,7 +31,7 @@ public class Goblin : Character
 	void Start()
     {
 		anim = GetComponent<Animator>();
-		moveSpeed += 1 * Time.deltaTime;
+        moveSpeed = 1;
 		isWalking = true;
         isRanger = UnityEngine.Random.Range(0, 4) == 0;
         health = new Health(5, 3, 2, -4);
@@ -70,8 +70,8 @@ public class Goblin : Character
 	{
 		if(isWalking == true)
 		{
-			this.gameObject.transform.position += new Vector3(-moveSpeed, 0, 0);
 			anim.SetBool("isWalking", true);
+			this.gameObject.transform.position += new Vector3(-moveSpeed * Time.deltaTime, 0, 0);
 			Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 		}
 	}
@@ -125,12 +125,17 @@ public class Goblin : Character
 		isWalking = true;
 	}
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Bullet")
         {
             takeDamage(1);
+            Destroy(collision.gameObject);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
 
         if (collision.gameObject.tag == "Axe")
         {

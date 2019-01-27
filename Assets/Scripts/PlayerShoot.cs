@@ -11,7 +11,7 @@ public class PlayerShoot : MonoBehaviour
     private float bulletVelocity = 20f;
     private LineRenderer trajectory;
     bool isAiming = false;
-    private Vector3 crossbowOffset = new Vector3(0, 0.5f, 0);
+    private Vector3 crossbowOffset = new Vector3(0, 0.5f, 0.1f);
     private Vector3 shoulderPivot = new Vector3(1.0f, 4f, 0);
 
     // Start is called before the first frame update
@@ -33,7 +33,7 @@ public class PlayerShoot : MonoBehaviour
             bulletVelocity * Mathf.Sin(rad)
         );
 
-        shoot(velocity);
+        shoot(rad, velocity);
         aim(rad, velocity);
     }
 
@@ -83,12 +83,16 @@ public class PlayerShoot : MonoBehaviour
     }
 
     // spawn bullet if shot.
-    private void shoot(Vector2 velocity)
+    private void shoot(float rad, Vector2 velocity)
     {
         bool shot = Input.GetButtonDown("Fire1");
         if (shot)
         {
-            Rigidbody2D newBullet = Instantiate(bullet, transform.position + crossbowOffset, transform.rotation);
+            Rigidbody2D newBullet = Instantiate(
+                bullet, 
+                transform.position + crossbowOffset, 
+                Quaternion.Euler(0, lookDirection == 1 ? 0 : 180, Mathf.Rad2Deg * rad)
+            );
             newBullet.velocity = velocity;
         }
     }
