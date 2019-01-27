@@ -62,7 +62,8 @@ public class PauseMenu : MonoBehaviour
 	public void GameOver()
 	{
 		GameOverMenu.SetActive(true);
-	}
+        Time.timeScale = 0;
+    }
 
 	public void BackToMenu(string name)
 	{

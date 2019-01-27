@@ -10,10 +10,10 @@ public class Health
 	private readonly float hOffset;
 	private float healthbarWidth = 1f;
     private float healthbarHeight = 0.2f;
-    private GameObject fullHealth = GameObject.CreatePrimitive(PrimitiveType.Cube);
-    private GameObject currentHealth = GameObject.CreatePrimitive(PrimitiveType.Cube);
+    private GameObject fullHealth;
+    private GameObject currentHealth;
 
-    public Health(int maxHealth, float scale = 1, float vOffset = 0, float hOffset = 0)
+    public Health(int maxHealth, float scale = 1, float vOffset = 0, float hOffset = 0, bool renderHealthBars = true)
     {
 		this.maxHealth = maxHealth;
         this.scale = scale;
@@ -21,42 +21,51 @@ public class Health
 		this.hOffset = hOffset;
 		health = this.maxHealth;
 
-        fullHealth.GetComponent<Renderer>().material.color = Color.red;
-        currentHealth.GetComponent<Renderer>().material.color = Color.green;
+        if (renderHealthBars)
+        {
+            fullHealth = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            currentHealth = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            fullHealth.GetComponent<Renderer>().material.color = Color.red;
+            currentHealth.GetComponent<Renderer>().material.color = Color.green;
+        }        
     }
 
     public void updateHealthBar(Vector2 pos)
     {
-        if (!fullHealth || !currentHealth)
+       
+        if (fullHealth)
         {
-            return;
+            fullHealth.transform.position = new Vector3(
+                pos.x + hOffset,
+                pos.y + 2 + vOffset,
+                1
+            );
+
+            fullHealth.transform.localScale = new Vector3(
+                healthbarWidth * scale,
+                healthbarHeight * scale,
+                0.1f
+            );
         }
+        
 
-        fullHealth.transform.position = new Vector3(
-            pos.x + hOffset, 
-            pos.y + 2 + vOffset, 
-            1
-        );
+        if (currentHealth)
+        {
+            float percentage = ((float)health) / maxHealth;
 
-        fullHealth.transform.localScale = new Vector3(
-            healthbarWidth * scale, 
-            healthbarHeight * scale, 
-            0.1f
-        );
+            currentHealth.transform.position = new Vector3(
+                pos.x + hOffset - healthbarWidth * scale / 2 + healthbarWidth * percentage * scale / 2,
+                pos.y + 2 + vOffset,
+                1
+            );
 
-        float percentage = ((float) health) / maxHealth;
-
-        currentHealth.transform.position = new Vector3(
-            pos.x + hOffset - healthbarWidth * scale / 2 + healthbarWidth * percentage * scale / 2, 
-            pos.y + 2 + vOffset, 
-            1
-        );
-
-        currentHealth.transform.localScale = new Vector3(
-            healthbarWidth * percentage * scale, 
-            healthbarHeight * scale, 
-            0.2f
-        );
+            currentHealth.transform.localScale = new Vector3(
+                healthbarWidth * percentage * scale,
+                healthbarHeight * scale,
+                0.2f
+            );
+        }
+        
     }
 
     public void takeDamage(int amount)
@@ -75,6 +84,11 @@ public class Health
     public int getHealth()
     {
         return health;
+    }
+
+    public int getMaxHealth()
+    {
+        return maxHealth;
     }
 
     public bool isDead()

@@ -12,6 +12,14 @@ public class Player : MonoBehaviour
 		health = new Health(10, 5, 8, 0);
 	}
 
+    private void Update()
+    {
+        if (health.isDead())
+        {
+            gameObject.GetComponent<PauseMenu>().GameOver();
+        }
+    }
+
     private void OnGUI()
     {
         health.updateHealthBar(transform.position);
